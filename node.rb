@@ -25,7 +25,7 @@ class Node
 
   def judge(vec)
     if left && right
-      if val.is_a?(Integer)
+      if val.is_a?(Numeric)
         vec[idx] < val ? left : right
       else
         vec[idx] ? left : right

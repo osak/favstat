@@ -26,7 +26,7 @@ def vals(list, i)
 end
 
 def get_pred(val)
-  if val.is_a?(Integer)
+  if val.is_a?(Numeric)
     lambda{|a| a < val}
   else
     lambda{|a| a}
@@ -79,11 +79,7 @@ db = DBConn.getdb("slopefav")
 features = db.collection("features")
 feature_list = features.find.to_a
 
-# データ構造ミスった．全部vecにまとめる．
-feature_list.each do |entry|
-  entry["vec"] << entry["mention"] << entry["url"] << entry["hashtag"] << entry["tweet_length"]
-end
-feature_names << "mention" << "url" << "hashtag" << "length"
+feature_names << "url" << "mention" << "hashtag" << "length"
 Node.feature_name = feature_names
 fav_count, no_fav_count = feature_list.partition{|a| a["fav"]}.map(&:size)
 puts Node.threshold = fav_count.to_f / no_fav_count.to_f
