@@ -37,7 +37,7 @@ def build_tree(list, depth=0)
   if list.size == 0
     return Node.new([])
   end
-  if depth == 5
+  if depth == 30
     return Node.new(list)
   end
 
@@ -79,7 +79,7 @@ db = DBConn.getdb("slopefav")
 features = db.collection("features")
 feature_list = features.find.to_a
 
-feature_names << "url" << "mention" << "hashtag" << "length"
+feature_names << "url" << "mention" << "hashtag" << "length" << "non-kana"
 Node.feature_name = feature_names
 fav_count, no_fav_count = feature_list.partition{|a| a["fav"]}.map(&:size)
 puts Node.threshold = fav_count.to_f / no_fav_count.to_f

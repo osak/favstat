@@ -3,7 +3,8 @@ module Feature
     def load_dict(name)
       dict = {}
       File.read(name).each_line.with_index do |line, idx|
-        dict[line.chomp] = idx
+        _, str = line.chomp.split(/\t/)
+        dict[str] = idx
       end
       dict
     end
@@ -19,6 +20,7 @@ module Feature
       feature_vec << !!(str.match(FavStat::HASHTAG_PATTERN))
       str.gsub!(FavStat::HASHTAG_PATTERN, '')
       feature_vec << str.length
+      feature_vec << str.each_char.count{|c| c =~ /\p{^hiragana}/}.to_f / str.length
 
       (3..6).each do |n|
         str.ngrams(n).each do |ngram|
