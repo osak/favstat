@@ -8,7 +8,6 @@ require_relative 'feature'
 tree = Marshal.load(File.open("tree.bin"))
 dict = Feature.load_dict("feature_words.txt")
 
-Node.threshold = THRESHOLD
 loop do
   print "> "
   line = gets.chomp

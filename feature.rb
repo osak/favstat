@@ -1,3 +1,5 @@
+require_relative 'favstat'
+
 module Feature
   class <<self
     def load_dict(name)
