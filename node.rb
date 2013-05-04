@@ -43,9 +43,10 @@ class Node
   def to_s(level=0)
     indent = "  "*level
     if left && right
-        indent + "#{@@feature_name[idx]}, #{@val}\n" + 
-        indent + "T->\n" + left.to_s(level+1) +
-        indent + "F->\n" + right.to_s(level+1)
+      op = val.is_a?(Numeric) ? '<' : '=='
+      indent + "#{@@feature_name[idx]} #{op} #{@val}\n" + 
+      indent + "T->\n" + left.to_s(level+1) +
+      indent + "F->\n" + right.to_s(level+1)
     else
       indent + "#{@fav}/#{@no_fav})\n"
     end
