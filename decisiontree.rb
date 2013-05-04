@@ -74,6 +74,23 @@ def build_tree(list, depth=0)
   end
 end
 
+def prune(node, mingain)
+  if node.leaf?
+    return
+  end
+
+  # ここに来たら葉ではない
+  left = node.left.result
+  right = node.right.result
+  merged = left + right
+  delta = entropy(merged) - (entropy(left)+entropy(right)) / 2
+
+  if delta < mingain
+    node.left = node.right = nil
+    node.result = merged
+  end
+end
+
 feature_names = File.read("feature_words.txt").lines.map{|l| l.chomp.split[1]}
 db = DBConn.getdb("slopefav")
 features = db.collection("features")
@@ -84,7 +101,12 @@ Node.feature_name = feature_names
 fav_count, no_fav_count = feature_list.partition{|a| a["fav"]}.map(&:size)
 puts Node.threshold = fav_count.to_f / no_fav_count.to_f
 
+puts "Building..."
 tree = build_tree(feature_list)
+puts "Pruneing..."
+prune(tree, 0.1)
+
+puts "Outputing..."
 File.open("tree.txt", "w") do |f|
   f.puts tree.to_s
 end

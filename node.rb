@@ -1,7 +1,7 @@
 class Node
   attr_reader :left, :right
   attr_reader :idx, :val
-  #attr_reader :result
+  attr_reader :result
 
   class << self
     def feature_name=(val)
@@ -15,13 +15,18 @@ class Node
 
   def initialize(*args)
     if args.size == 1
-      #@result = args.first
-      @fav, @no_fav = args.first.partition{|a| a["fav"]}.map(&:size)
-      @prop = @fav.to_f / @no_fav.to_f
+      self.result = args.first
     else
       @left, @right, @idx, @val = args
     end
   end
+
+  def result=(list)
+    @result = list.dup
+    @fav, @no_fav = @result.partition{|a| a["fav"]}.map(&:size)
+    @prop = @fav.to_f / (@fav.to_f + @no_fav.to_f)
+  end
+
 
   def judge(vec)
     if left && right
@@ -31,7 +36,7 @@ class Node
         vec[idx] ? left : right
       end
     else
-      @prop > @@threshold
+      @prop
     end
   end
 
@@ -44,6 +49,10 @@ class Node
     else
       indent + "#{@fav}/#{@no_fav})\n"
     end
+  end
+
+  def leaf?
+    !!(left && right)
   end
 end
 

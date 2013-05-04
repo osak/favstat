@@ -1,10 +1,9 @@
 #!/usr/bin/env ruby
 
+require 'bson'
 require_relative 'node'
 require_relative 'favstat'
 require_relative 'feature'
-
-THRESHOLD = 0.5832
 
 tree = Marshal.load(File.open("tree.bin"))
 dict = Feature.load_dict("feature_words.txt")
